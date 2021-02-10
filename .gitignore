@@ -21,3 +21,23 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+.cache
+scalastyle-output.xml
+.classpath
+.idea
+.metadata
+.settings
+.project
+.version.properties
+.DS_Store
+filter.properties
+logs.zip
+target
+tmp
+*.iml
+*.swp
+*.pyc
+*.ipr
+*.iws
+build-target

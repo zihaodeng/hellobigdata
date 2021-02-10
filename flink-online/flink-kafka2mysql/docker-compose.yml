@@ -1,0 +1,101 @@
+version: '2'
+services:
+  jobmanager:
+    image: zihaodeng/flink:1.11.1
+    volumes:
+      - D:/21docker/flinkDeploy:/opt/flinkDeploy
+    hostname: "jobmanager"
+    expose:
+      - "6123"
+    ports:
+      - "4000:4000"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+  taskmanager:
+    image: zihaodeng/flink:1.11.1
+    volumes:
+      - D:/21docker/flinkDeploy:/opt/flinkDeploy
+    expose:
+      - "6121"
+      - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - jobmanager:jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+  zookeeper:
+    container_name: zookeeper
+    image: zookeeper:3.6.1
+    ports:
+      - "2181:2181"
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka:2.12-2.5.0
+    volumes:
+      - D:/21docker/var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      #KAFKA_ADVERTISED_HOST_NAME: kafka
+      HOSTNAME_COMMAND: "route -n | awk '/UG[ \t]/{print $$2}'"
+      #根据实际业务修改
+      KAFKA_CREATE_TOPICS: "covid19count-log:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      #IDEA DEBUG 宿主机连接使用
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+#      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+
+      #KAFKA_ADVERTISED_LISTENERS的配置，这个参数会写到kafka配置的advertised.listeners这一项中，应用会用来连接broker;
+      #外部代理地址
+      #KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      #允许外部端口连接
+      #KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - D:/21docker/mysql/data/db:/var/lib/mysql/
+      - D:/21docker/mysql/mysql-3346.sock:/var/run/mysql.sock
+      - D:/21docker/mysql/data/conf:/etc/mysql/conf.d
+    ports:
+      - 3306:3306
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+#  elasticsearch:
+#    container_name: elasticsearch
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+#    volumes:
+#      - D:/21docker/elasticsearch/data:/usr/share/elasticsearch/data
+##      - D:/21docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - discovery.type=single-node
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#      nofile:
+#        soft: 65536
+#        hard: 65536
+#  kibana:
+#    container_name: kibana
+#    image: docker.elastic.co/kibana/kibana:7.8.0
+#    volumes:
+#      - D:/21docker/kibana/data:/opt/kibana/data
+##      - D:/21docker/kibana/config:/opt/kibana/config
+#    ports:
+#      - "5601:5601"

@@ -1,4 +1,4 @@
-package OperatorState;
+package operatorstate;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;

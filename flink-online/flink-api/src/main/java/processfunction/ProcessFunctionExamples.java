@@ -58,7 +58,7 @@ public class ProcessFunctionExamples {
         env.execute("Nucleic Acid Test");//核酸检测
     }
 
-    static class ConfirmIncreaseFunctoin extends ProcessFunction<Tuple3<String, Integer, Long>,String>{
+    private static class ConfirmIncreaseFunctoin extends ProcessFunction<Tuple3<String, Integer, Long>,String>{
         private final int threshold=100;
         private ValueState<Long> currentTime;
         private MapState<String,Integer> areaTime;

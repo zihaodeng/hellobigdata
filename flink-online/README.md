@@ -1,5 +1,8 @@
+# flink-api
+这是一个flink各种api的使用demo，包括SQL/Table Api、Datastream Api、ProcessFunction！
+
 # flink-datastream-state
-这位是一个flink各种state的使用demo！
+这是一个flink各种state的使用demo！
 
 # flink-kafka2es
 这是利用flink datastream api 实现的 kafka to elasticsearch的简单案例！

@@ -1,5 +1,5 @@
 # flink-api
-这是一个flink各种api的使用demo，包括SQL/Table Api、Datastream Api、ProcessFunction！
+这是一个flink各种api的使用demo，包括sql/table api、datastream api、processfunction！
 
 # flink-datastream-state
 这是一个flink各种state的使用demo！

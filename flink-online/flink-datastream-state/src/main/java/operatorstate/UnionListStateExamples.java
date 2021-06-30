@@ -152,6 +152,7 @@ public class UnionListStateExamples {
             super.open(parameters);
             subtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
         }
+
         @Override
         public void snapshotState(FunctionSnapshotContext functionSnapshotContext) throws Exception {
             checkpointedState.clear();
@@ -159,6 +160,7 @@ public class UnionListStateExamples {
                 checkpointedState.add(element);
             }
         }
+
         @Override
         public void initializeState(FunctionInitializationContext context) throws Exception {
             int currentSubtaskIndex = getRuntimeContext().getIndexOfThisSubtask();
@@ -181,6 +183,7 @@ public class UnionListStateExamples {
                 }
             }
         }
+
         @Override
         public void invoke(Tuple2<String, Integer> value, Context context) throws Exception {
             bufferedElements.add(Tuple3.of(subtaskIndex, value.f0, value.f1));
@@ -194,5 +197,4 @@ public class UnionListStateExamples {
             }
         }
     }
-
 }
